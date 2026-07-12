@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>অনলাইন মক টেস্ট (Mock Test)</title>
+    <style>
+        :root {
+            --primary-color: #1e3a8a;
+            --secondary-color: #3b82f6;
+            --success-color: #10b981;
+            --danger-color: #ef4444;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'Kalpurush', 'SolaimanLipi';
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 10px;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            max-width: 800px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 24px;
+            flex: 1 1 100%;
+            margin-bottom: 10px;
+        }
+
+        .timer-box, .score-box {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 18px;
+            margin: 5px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+
+        .instructions {
+            background-color: #eff6ff;
+            border-left: 4px solid var(--secondary-color);
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+        }
+
+        .instructions h3 {
+            margin-top: 0;
+            color: var(--primary-color);
+        }
+
+        .instructions ul {
+            margin: 0;
+            padding-left: 20px;
+        }
+
+        .question-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #0f172a;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 16px;
+        }
+
+        .option-label:hover {
+            background-color: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .option-label input {
+            margin-right: 12px;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--secondary-color);
+        }
+
+        /* Result styles */
+        .correct {
+            background-color: #d1fae5 !important;
+            border-color: var(--success-color) !important;
+            color: #065f46 !important;
+            font-weight: 600;
+        }
+
+        .incorrect {
+            background-color: #fee2e2 !important;
+            border-color: var(--danger-color) !important;
+            color: #991b1b !important;
+            font-weight: 600;
+        }
+
+        .correct-answer-marker {
+            margin-left: auto;
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        .wrong-answer-marker {
+            margin-left: auto;
+            color: var(--danger-color);
+            font-weight: bold;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            max-width: 200px;
+            margin: 40px auto;
+            padding: 14px;
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: background-color 0.2s;
+            text-align: center;
+        }
+
+        .submit-btn:hover {
+            background-color: #172554;
+        }
+
+        .result-panel {
+            display: none;
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            margin-bottom: 30px;
+        }
+
+        .result-panel h2 {
+            color: var(--primary-color);
+            margin-top: 0;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: #f1f5f9;
+            padding: 15px;
+            border-radius: 6px;
+        }
+
+        .stat-val {
+            font-size: 22px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .disabled-options {
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <h1>অনলাইন মক টেস্ট (Mock Test)</h1>
+        <div class="timer-box" id="timer">সময় বাকি: 40:00</div>
+        <div class="score-box" id="live-score-box" style="display:none;">স্কোর: 0</div>
+    </div>
+</header>
+
+<div class="container">
+    <div class="instructions" id="instruction-block">
+        <h3>পরীক্ষার নির্দেশাবলী:</h3>
+        <ul>
+            <li>মোট প্রশ্ন সংখ্যা: <strong>৫০টি</strong>[span_0](start_span)[span_0](end_span)</li>
+            <li>মোট বরাদ্দ সময়: <strong>৪০ মিনিট</strong>[span_1](start_span)[span_1](end_span)</li>
+            <li>প্রতিটি সঠিক উত্তরের জন্য পাবেন: <strong>+১ নম্বর</strong>[span_2](start_span)[span_2](end_span)</li>
+            <li>প্রতিটি ভুল উত্তরের জন্য কাটা যাবে: <strong>-০.২৫ নম্বর</strong>[span_3](start_span)[span_3](end_span)</li>
+            <li>নির্ধারিত সময় শেষ হলে পরীক্ষাটি স্বয়ংক্রিয়ভাবে (Auto-submit) জমা হয়ে যাবে।[span_4](start_span)[span_4](end_span)</li>
+        </ul>
+    </div>
+
+    <div class="result-panel" id="result-panel">
+        <h2>ফলাফল বিবরণী</h2>
+        <div class="stat-grid">
+            <div class="stat-card">
+                <div>মোট প্রাপ্ত নম্বর</div>
+                <div class="stat-val" id="final-score">0</div>
+            </div>
+            <div class="stat-card">
+                <div>সঠিক উত্তর</div>
+                <div class="stat-val" id="correct-count" style="color: var(--success-color);">0</div>
+            </div>
+            <div class="stat-card">
+                <div>ভুল উত্তর</div>
+                <div class="stat-val" id="wrong-count" style="color: var(--danger-color);">0</div>
+            </div>
+            <div class="stat-card">
+                <div>অনুত্তরিত</div>
+                <div class="stat-val" id="unanswered-count">0</div>
+            </div>
+        </div>
+        <p style="font-weight: bold; color: #475569;">নিচে আপনার উত্তরপত্রের প্রিভিউ দেওয়া হলো।</p>
+    </div>
+
+    <form id="quiz-form">
+        
+        <div class="question-card">
+            <div class="question-text">1. সিন্ধু সভ্যতার কোন কেন্দ্রে বিখ্যাত 'গ্রেট বাথ' বা বৃহৎ স্নানাগারটি পাওয়া গেছে?[span_5](start_span)[span_5](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q1" value="ক">(ক) হরপ্পা</label>[span_6](start_span)[span_6](end_span)
+                <label class="option-label"><input type="radio" name="q1" value="খ">(খ) মহেঞ্জোদারো</label>[span_7](start_span)[span_7](end_span)
+                <label class="option-label"><input type="radio" name="q1" value="গ">(গ) লোথাল</label>[span_8](start_span)[span_8](end_span)
+                <label class="option-label"><input type="radio" name="q1" value="ঘ">(ঘ) কালিবঙ্গান</label>[span_9](start_span)[span_9](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">2. কে 'বৌদ্ধধর্ম' প্রচারের জন্য সিংহলে (শ্রীলঙ্কা) মিশন পাঠিয়েছিলেন?[span_10](start_span)[span_10](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q2" value="ক">(ক) চন্দ্রগুপ্ত মৌর্য</label>[span_11](start_span)[span_11](end_span)
+                <label class="option-label"><input type="radio" name="q2" value="খ">(খ) কনিষ্ক</label>[span_12](start_span)[span_12](end_span)
+                <label class="option-label"><input type="radio" name="q2" value="গ">(গ) অশোক</label>[span_13](start_span)[span_13](end_span)
+                <label class="option-label"><input type="radio" name="q2" value="ঘ">(ঘ) হর্ষवर्धन</label>[span_14](start_span)[span_14](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">3. 'কুতুব মিনার'-এর নির্মাণ কাজ কে শেষ করেছিলেন?[span_15](start_span)[span_15](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q3" value="ক">(ক) কুতুবউদ্দিন আইবক</label>[span_16](start_span)[span_16](end_span)
+                <label class="option-label"><input type="radio" name="q3" value="খ">(খ) ইলতুৎমিশ</label>[span_17](start_span)[span_17](end_span)
+                <label class="option-label"><input type="radio" name="q3" value="গ">(গ) রাজিয়া সুলতানা</label>[span_18](start_span)[span_18](end_span)
+                <label class="option-label"><input type="radio" name="q3" value="ঘ">(ঘ) আলাউদ্দিন খিলজি</label>[span_19](start_span)[span_19](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">4. আকবরের রাজত্বকালে রাজস্ব ব্যবস্থার দায়িত্বে কে ছিলেন?[span_20](start_span)[span_20](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q4" value="ক">(ক) বীরবল</label>[span_21](start_span)[span_21](end_span)
+                <label class="option-label"><input type="radio" name="q4" value="খ">(খ) বৈরাম খাঁ</label>[span_22](start_span)[span_22](end_span)
+                <label class="option-label"><input type="radio" name="q4" value="গ">(গ) তানসেন</label>[span_23](start_span)[span_23](end_span)
+                <label class="option-label"><input type="radio" name="q4" value="ঘ">(ঘ) রাজা টোডরমল</label>[span_24](start_span)[span_24](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">5. ভারতে পর্তুগিজ শক্তির প্রথম কেন্দ্র কোনটি ছিল?[span_25](start_span)[span_25](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q5" value="ক">(ক) গোয়া</label>[span_26](start_span)[span_26](end_span)
+                <label class="option-label"><input type="radio" name="q5" value="খ">(খ) কোচিন</label>[span_27](start_span)[span_27](end_span)
+                <label class="option-label"><input type="radio" name="q5" value="গ">(গ) কালিকট</label>[span_28](start_span)[span_28](end_span)
+                <label class="option-label"><input type="radio" name="q5" value="ঘ">(ঘ) দমন</label>[span_29](start_span)[span_29](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">6. স্বামী বিবেকানন্দ কত সালে শিকাগো ধর্ম মহাসভায় ভাষণ দিয়েছিলেন?[span_30](start_span)[span_30](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q6" value="ক">(ক) ১৮৯১</label>[span_31](start_span)[span_31](end_span)
+                <label class="option-label"><input type="radio" name="q6" value="খ">(খ) ১৮৯৩</label>[span_32](start_span)[span_32](end_span)
+                <label class="option-label"><input type="radio" name="q6" value="গ">(গ) ১৮৯৫</label>[span_33](start_span)[span_33](end_span)
+                <label class="option-label"><input type="radio" name="q6" value="ঘ">(ঘ) ১৮৯৭</label>[span_34](start_span)[span_34](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">7. 'মহাত্মা' গান্ধীকে প্রথম কে 'জাতির জনক' (Father of the Nation) বলে সম্বোধন করেন?[span_35](start_span)[span_35](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q7" value="ক">(ক) রবীন্দ্রনাথ ঠাকুর</label>[span_36](start_span)[span_36](end_span)
+                <label class="option-label"><input type="radio" name="q7" value="খ">(খ) জওহরলাল নেহেরু</label>[span_37](start_span)[span_37](end_span)
+                <label class="option-label"><input type="radio" name="q7" value="গ">(গ) সুভাষচন্দ্র বসু</label>[span_38](start_span)[span_38](end_span)
+                <label class="option-label"><input type="radio" name="q7" value="ঘ">(ঘ) সর্দার বল্লভভাই প্যাটেল</label>[span_39](start_span)[span_39](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">8. জালিয়ানওয়ালাবাগ হত্যাকাণ্ড কোন বছর ঘটেছিল?[span_40](start_span)[span_40](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q8" value="ক">(ক) ১৯১৯</label>[span_41](start_span)[span_41](end_span)
+                <label class="option-label"><input type="radio" name="q8" value="খ">(খ) ১৯২০</label>[span_42](start_span)[span_42](end_span)
+                <label class="option-label"><input type="radio" name="q8" value="গ">(গ) ১৯২১</label>[span_43](start_span)[span_43](end_span)
+                <label class="option-label"><input type="radio" name="q8" value="ঘ">(ঘ) ১৯২২</label>[span_44](start_span)[span_44](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">9. आजाद हिन्द फौज (INA) কোথায় প্রথম গঠিত হয়েছিল?[span_45](start_span)[span_45](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q9" value="ক">(ক) সিঙ্গাপুর</label>[span_46](start_span)[span_46](end_span)
+                <label class="option-label"><input type="radio" name="q9" value="খ">(খ) টোকিও</label>[span_47](start_span)[span_47](end_span)
+                <label class="option-label"><input type="radio" name="q9" value="গ">(গ) রেঙ্গুন</label>[span_48](start_span)[span_48](end_span)
+                <label class="option-label"><input type="radio" name="q9" value="ঘ">(ঘ) ব্যাংকক</label>[span_49](start_span)[span_49](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">10. কত সালের আম্বেদকর ও গান্ধীর মধ্যে 'পুনা চুক্তি' স্বাক্ষরিত হয়?[span_50](start_span)[span_50](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q10" value="ক">(ক) ১৯৩০</label>[span_51](start_span)[span_51](end_span)
+                <label class="option-label"><input type="radio" name="q10" value="খ">(খ) ১৯৩১</label>[span_52](start_span)[span_52](end_span)
+                <label class="option-label"><input type="radio" name="q10" value="গ">(গ) ১৯৩২</label>[span_53](start_span)[span_53](end_span)
+                <label class="option-label"><input type="radio" name="q10" value="ঘ">(ঘ) ১৯৩৩</label>[span_54](start_span)[span_54](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">11. ভারতের কোন রাজ্যের উপকূলরেখা (Coastline) দীর্ঘতম?[span_55](start_span)[span_55](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q11" value="ক">(ক) তামিলনাড়ু</label>[span_56](start_span)[span_56](end_span)
+                <label class="option-label"><input type="radio" name="q11" value="খ">(খ) মহারাষ্ট্র</label>[span_57](start_span)[span_57](end_span)
+                <label class="option-label"><input type="radio" name="q11" value="গ">(গ) গুজরাট</label>[span_58](start_span)[span_58](end_span)
+                <label class="option-label"><input type="radio" name="q11" value="ঘ">(ঘ) অন্ধ্রপ্রদেশ</label>[span_59](start_span)[span_59](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">12. ক্ষেত্রফলের দিক থেকে ভারতের ক্ষুদ্রতম রাজ্য কোনটি?[span_60](start_span)[span_60](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q12" value="ক">(ক) সিকিম</label>[span_61](start_span)[span_61](end_span)
+                <label class="option-label"><input type="radio" name="q12" value="খ">(খ) গোয়া</label>[span_62](start_span)[span_62](end_span)
+                <label class="option-label"><input type="radio" name="q12" value="গ">(গ) ত্রিপুরা</label>[span_63](start_span)[span_63](end_span)
+                <label class="option-label"><input type="radio" name="q12" value="ঘ">(ঘ) মিজোরাম</label>[span_64](start_span)[span_64](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">13. আন্দামান ও নিকোবর দ্বীপপুঞ্জকে পৃথক করেছে কোন চ্যানেল?[span_65](start_span)[span_65](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q13" value="ক">(ক) ৮ ডিগ্রি চ্যানেল</label>[span_66](start_span)[span_66](end_span)
+                <label class="option-label"><input type="radio" name="q13" value="খ">(খ) ৯ ডিগ্রি চ্যানেল</label>[span_67](start_span)[span_67](end_span)
+                <label class="option-label"><input type="radio" name="q13" value="গ">(গ) ১০ ডিগ্রি চ্যানেল</label>[span_68](start_span)[span_68](end_span)
+                <label class="option-label"><input type="radio" name="q13" value="ঘ">(ঘ) ডঙ্কান প্যাসেজ</label>[span_69](start_span)[span_69](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">14. 'লুনী' নদী ভারতের কোন রাজ্যে প্রবাহিত হয়েছে?[span_70](start_span)[span_70](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q14" value="ক">(ক) পাঞ্জাব</label>[span_71](start_span)[span_71](end_span)
+                <label class="option-label"><input type="radio" name="q14" value="খ">(খ) রাজস্থান</label>[span_72](start_span)[span_72](end_span)
+                <label class="option-label"><input type="radio" name="q14" value="গ">(গ) মধ্যপ্রদেশ</label>[span_73](start_span)[span_73](end_span)
+                <label class="option-label"><input type="radio" name="q14" value="ঘ">(ঘ) গুজরাট</label>[span_74](start_span)[span_74](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">15. ভারতের সর্বোচ্চ জলপ্রপাত 'কুঞ্চিকল' কোন রাজ্যে অবস্থিত?[span_75](start_span)[span_75](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q15" value="ক">(ক) কর্ণাটক</label>[span_76](start_span)[span_76](end_span)
+                <label class="option-label"><input type="radio" name="q15" value="খ">(খ) কেরালা</label>[span_77](start_span)[span_77](end_span)
+                <label class="option-label"><input type="radio" name="q15" value="গ">(গ) মধ্যপ্রদেশ</label>[span_78](start_span)[span_78](end_span)
+                <label class="option-label"><input type="radio" name="q15" value="ঘ">(ঘ) মহারাষ্ট্র</label>[span_79](start_span)[span_79](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">16. ভারতের প্রাচীনতম তৈল শোধনাগারটি কোথায় অবস্থিত?[span_80](start_span)[span_80](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q16" value="ক">(ক) হলদিয়া</label>[span_81](start_span)[span_81](end_span)
+                <label class="option-label"><input type="radio" name="q16" value="খ">(খ) ট্রম্বে</label>[span_82](start_span)[span_82](end_span)
+                <label class="option-label"><input type="radio" name="q16" value="গ">(গ) ডিগবয়</label>[span_83](start_span)[span_83](end_span)
+                <label class="option-label"><input type="radio" name="q16" value="ঘ">(ঘ) জামনগর</label>[span_84](start_span)[span_84](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">17. 'কাজিরাঙ্গা জাতীয় উদ্যান' কিসের জন্য বিখ্যাত?[span_85](start_span)[span_85](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q17" value="ক">(ক) বাঘ</label>[span_86](start_span)[span_86](end_span)
+                <label class="option-label"><input type="radio" name="q17" value="খ">(খ) একশৃঙ্গ গণ্ডার</label>[span_87](start_span)[span_87](end_span)
+                <label class="option-label"><input type="radio" name="q17" value="গ">(গ) হাতি</label>[span_88](start_span)[span_88](end_span)
+                <label class="option-label"><input type="radio" name="q17" value="ঘ">(ঘ) সিংহ</label>[span_89](start_span)[span_89](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">18. দক্ষিণ ভারতের দীর্ঘতম নদী কোনটি?[span_90](start_span)[span_90](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q18" value="ক">(ক) কৃষ্ণা</label>[span_91](start_span)[span_91](end_span)
+                <label class="option-label"><input type="radio" name="q18" value="খ">(খ) কাবেরী</label>[span_92](start_span)[span_92](end_span)
+                <label class="option-label"><input type="radio" name="q18" value="গ">(গ) গোদাবরী</label>[span_93](start_span)[span_93](end_span)
+                <label class="option-label"><input type="radio" name="q18" value="ঘ">(ঘ) নর্মদা</label>[span_94](start_span)[span_94](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">19. সূর্য থেকে পৃথিবীতে আলো আসতে আনুমানিক কত সময় লাগে?[span_95](start_span)[span_95](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q19" value="ক">(ক) ৫ মিনিট</label>[span_96](start_span)[span_96](end_span)
+                <label class="option-label"><input type="radio" name="q19" value="খ">(খ) ৬ মিনিট ২০ সেকেন্ড</label>[span_97](start_span)[span_97](end_span)
+                <label class="option-label"><input type="radio" name="q19" value="গ">(গ) ৮ মিনিট ২০ সেকেন্ড</label>[span_98](start_span)[span_98](end_span)
+                <label class="option-label"><input type="radio" name="q19" value="ঘ">(ঘ) ১০ মিনিট</label>[span_99](start_span)[span_99](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">20. ভারতের প্রথম পারমাণবিক বিদ্যুৎ কেন্দ্র কোনটি?[span_100](start_span)[span_100](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q20" value="ক">(ক) কালপাক্কাম</label>[span_101](start_span)[span_101](end_span)
+                <label class="option-label"><input type="radio" name="q20" value="খ">(খ) তারাপুর</label>[span_102](start_span)[span_102](end_span)
+                <label class="option-label"><input type="radio" name="q20" value="গ">(গ) রাওয়াতভাটা</label>[span_103](start_span)[span_103](end_span)
+                <label class="option-label"><input type="radio" name="q20" value="ঘ">(ঘ) কাইগা</label>[span_104](start_span)[span_104](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">21. মানবদেহের বৃহত্তম অঙ্গ (Organ) কোনটি?[span_105](start_span)[span_105](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q21" value="ক">(ক) লিভার</label>[span_106](start_span)[span_106](end_span)
+                <label class="option-label"><input type="radio" name="q21" value="খ">(খ) ত্বক (Skin)</label>[span_107](start_span)[span_107](end_span)
+                <label class="option-label"><input type="radio" name="q21" value="গ">(গ) ফুসফুস</label>[span_108](start_span)[span_108](end_span)
+                <label class="option-label"><input type="radio" name="q21" value="ঘ">(ঘ) ক্ষুদ্রাস্ত্র</label>[span_109](start_span)[span_109](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">22. রক্ত জমাট বাঁধতে কোন ভিটামিন সাহায্য করে?[span_110](start_span)[span_110](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q22" value="ক">(ক) ভিটামিন A</label>[span_111](start_span)[span_111](end_span)
+                <label class="option-label"><input type="radio" name="q22" value="খ">(খ) ভিটামিন B</label>[span_112](start_span)[span_112](end_span)
+                <label class="option-label"><input type="radio" name="q22" value="গ">(গ) ভিটামিন E</label>[span_113](start_span)[span_113](end_span)
+                <label class="option-label"><input type="radio" name="q22" value="ঘ">(ঘ) ভিটামিন K</label>[span_114](start_span)[span_114](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">23. ইনসুলিন হরমোন মানবদেহের কোন অংশ থেকে ক্ষরিত হয়?[span_115](start_span)[span_115](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q23" value="ক">(ক) পিটুইটারি</label>[span_116](start_span)[span_116](end_span)
+                <label class="option-label"><input type="radio" name="q23" value="খ">(খ) থাইরয়েড</label>[span_117](start_span)[span_117](end_span)
+                <label class="option-label"><input type="radio" name="q23" value="গ">(গ) অগ্ন্যাশয় (Pancreas)</label>[span_118](start_span)[span_118](end_span)
+                <label class="option-label"><input type="radio" name="q23" value="ঘ">(ঘ) লিভার</label>[span_119](start_span)[span_119](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">24. 'কোষের মস্তিষ্ক' কাকে বলা হয়?[span_120](start_span)[span_120](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q24" value="ক">(ক) মাইটোকন্ড্রিয়া</label>[span_121](start_span)[span_121](end_span)
+                <label class="option-label"><input type="radio" name="q24" value="খ">(খ) নিউক্লিয়াস</label>[span_122](start_span)[span_122](end_span)
+                <label class="option-label"><input type="radio" name="q24" value="গ">(গ) রাইবোজোম</label>[span_123](start_span)[span_123](end_span)
+                <label class="option-label"><input type="radio" name="q24" value="ঘ">(ঘ) লাইসোজোম</label>[span_124](start_span)[span_124](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">25. পেনিসিলিন কে আবিষ্কার করেন?[span_125](start_span)[span_125](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q25" value="ক">(ক) লুই পাস্তুর</label>[span_126](start_span)[span_126](end_span)
+                <label class="option-label"><input type="radio" name="q25" value="খ">(খ) আলেকজান্ডার ফ্লেমিং</label>[span_127](start_span)[span_127](end_span)
+                <label class="option-label"><input type="radio" name="q25" value="গ">(গ) এডওয়ার্ড জেনার</label>[span_128](start_span)[span_128](end_span)
+                <label class="option-label"><input type="radio" name="q25" value="ঘ">(ঘ) রবার্ট কোচ</label>[span_129](start_span)[span_129](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">26. মানবদেহে ক্রোমোজোমের সংখ্যা কত?[span_130](start_span)[span_130](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q26" value="ক">(ক) ৪২টি</label>[span_131](start_span)[span_131](end_span)
+                <label class="option-label"><input type="radio" name="q26" value="খ">(খ) ৪৪৪টি</label>[span_132](start_span)[span_132](end_span)
+                <label class="option-label"><input type="radio" name="q26" value="গ">(গ) ৪৬টি</label>[span_133](start_span)[span_133](end_span)
+                <label class="option-label"><input type="radio" name="q26" value="ঘ">(ঘ) ৪৮টি</label>[span_134](start_span)[span_134](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">27. নিচের কোনটি নোবেল গ্যাস (Noble Gas) নয়?[span_135](start_span)[span_135](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q27" value="ক">(ক) হিলিয়াম</label>[span_136](start_span)[span_136](end_span)
+                <label class="option-label"><input type="radio" name="q27" value="খ">(খ) নিয়ন</label>[span_137](start_span)[span_137](end_span)
+                <label class="option-label"><input type="radio" name="q27" value="গ">(গ) আর্গন</label>[span_138](start_span)[span_138](end_span)
+                <label class="option-label"><input type="radio" name="q27" value="ঘ">(ঘ) হাইড্রোজেন</label>[span_139](start_span)[span_139](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">28. রান্নার গ্যাসে (LPG) প্রধানত কোন উপাদান থাকে?[span_140](start_span)[span_140](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q28" value="ক">(ক) মিথেন ও ইথেন</label>[span_141](start_span)[span_141](end_span)
+                <label class="option-label"><input type="radio" name="q28" value="খ">(খ) প্রোপেন ও বিউটেন</label>[span_142](start_span)[span_142](end_span)
+                <label class="option-label"><input type="radio" name="q28" value="গ">(গ) ইথেন ও প্রোপেন</label>[span_143](start_span)[span_143](end_span)
+                <label class="option-label"><input type="radio" name="q28" value="ঘ">(ঘ) হাইড্রোজেন ও মিথেন</label>[span_144](start_span)[span_144](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">29. গাড়ির পিছনের দৃশ্য দেখার জন্য কোন ধরণের দর্পণ ব্যবহার করা হয়?[span_145](start_span)[span_145](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q29" value="ক">(ক) সমতল দর্পণ</label>[span_146](start_span)[span_146](end_span)
+                <label class="option-label"><input type="radio" name="q29" value="খ">(খ) অবতল দর্পণ</label>[span_147](start_span)[span_147](end_span)
+                <label class="option-label"><input type="radio" name="q29" value="গ">(গ) উত্তল দর্পণ</label>[span_148](start_span)[span_148](end_span)
+                <label class="option-label"><input type="radio" name="q29" value="ঘ">(ঘ) নলাকার দর্পণ</label>[span_149](start_span)[span_149](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">30. 'শব্দের তীব্রতা' পরিমাপের একক কী?[span_150](start_span)[span_150](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q30" value="ক">(ক) হার্টজ (Hz)</label>[span_151](start_span)[span_151](end_span)
+                <label class="option-label"><input type="radio" name="q30" value="খ">(খ) ডেসিবেল (dB)</label>[span_152](start_span)[span_152](end_span)
+                <label class="option-label"><input type="radio" name="q30" value="গ">(গ) ওয়াট</label>[span_153](start_span)[span_153](end_span)
+                <label class="option-label"><input type="radio" name="q30" value="ঘ">(ঘ) জুল</label>[span_154](start_span)[span_154](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">31. ভারতীয় সংবিধানের জনক কাকে বলা হয়?[span_155](start_span)[span_155](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q31" value="ক">(ক) ড. রাজেন্দ্র প্রসাদ</label>[span_156](start_span)[span_156](end_span)
+                <label class="option-label"><input type="radio" name="q31" value="খ">(খ) জওহরলাল নেহেরু</label>[span_157](start_span)[span_157](end_span)
+                <label class="option-label"><input type="radio" name="q31" value="গ">(গ) ড. বি আর আম্বেদকর</label>[span_158](start_span)[span_158](end_span)
+                <label class="option-label"><input type="radio" name="q31" value="ঘ">(ঘ) সর্দার প্যাটেল</label>[span_159](start_span)[span_159](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">32. ভারতীয় সংবিধানে 'মৌলিক অধিকার' কোন দেশের সংবিধান থেকে নেওয়া হয়েছে?[span_160](start_span)[span_160](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q32" value="ক">(ক) ব্রিটেন</label>[span_161](start_span)[span_161](end_span)
+                <label class="option-label"><input type="radio" name="q32" value="খ">(খ) আমেরিকা (USA)</label>[span_162](start_span)[span_162](end_span)
+                <label class="option-label"><input type="radio" name="q32" value="গ">(গ) কানাডা</label>[span_163](start_span)[span_163](end_span)
+                <label class="option-label"><input type="radio" name="q32" value="ঘ">(ঘ) আয়ারল্যান্ড</label>[span_164](start_span)[span_164](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">33. ভারতের লোকসভার প্রথম স্পিকার কে ছিলেন?[span_165](start_span)[span_165](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q33" value="ক">(ক) জি ভি মাভলঙ্কর</label>[span_166](start_span)[span_166](end_span)
+                <label class="option-label"><input type="radio" name="q33" value="খ">(খ) বলরাম জাখর</label>[span_167](start_span)[span_167](end_span)
+                <label class="option-label"><input type="radio" name="q33" value="গ">(গ) মীরা কুমার</label>[span_168](start_span)[span_168](end_span)
+                <label class="option-label"><input type="radio" name="q33" value="ঘ">(ঘ) সোমনাথ চ্যাটার্জি</label>[span_169](start_span)[span_169](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">34. সুপ্রিম কোর্টের বিচারপতিদের অবসরের বয়স কত বছর?[span_170](start_span)[span_170](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q34" value="ক">(ক) ৬০ বছর</label>[span_171](start_span)[span_171](end_span)
+                <label class="option-label"><input type="radio" name="q34" value="খ">(খ) ৬২ বছর</label>[span_172](start_span)[span_172](end_span)
+                <label class="option-label"><input type="radio" name="q34" value="গ">(গ) ৬৫ বছর</label>[span_173](start_span)[span_173](end_span)
+                <label class="option-label"><input type="radio" name="q34" value="ঘ">(ঘ) ৭০ বছর</label>[span_174](start_span)[span_174](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">35. পঞ্চায়েতি রাজ ব্যবস্থা প্রথম কোন রাজ্যে চালু হয়?[span_175](start_span)[span_175](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q35" value="ক">(ক) রাজস্থান</label>[span_176](start_span)[span_176](end_span)
+                <label class="option-label"><input type="radio" name="q35" value="খ">(খ) অন্ধ্রপ্রদেশ</label>[span_177](start_span)[span_177](end_span)
+                <label class="option-label"><input type="radio" name="q35" value="গ">(গ) পশ্চিমবঙ্গ</label>[span_178](start_span)[span_178](end_span)
+                <label class="option-label"><input type="radio" name="q35" value="ঘ">(ঘ) পাঞ্জাব</label>[span_179](start_span)[span_179](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">36. ভারতের রাষ্ট্রপতিকে কে শপথ বাক্য পাঠ করান?[span_180](start_span)[span_180](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q36" value="ক">(ক) উপ-রাষ্ট্রপতি</label>[span_181](start_span)[span_181](end_span)
+                <label class="option-label"><input type="radio" name="q36" value="খ">(খ) প্রধানমন্ত্রী</label>[span_182](start_span)[span_182](end_span)
+                <label class="option-label"><input type="radio" name="q36" value="গ">(গ) লোকসভার স্পিকার</label>[span_183](start_span)[span_183](end_span)
+                <label class="option-label"><input type="radio" name="q36" value="ঘ">(ঘ) ভারতের প্রধান বিচারপতি</label>[span_184](start_span)[span_184](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">37. কততম সংশোধনী দ্বারা ভারতীয় সংবিধানে 'মৌলিক কর্তব্য' যুক্ত করা হয়?[span_185](start_span)[span_185](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q37" value="ক">(ক) ৪২তম</label>[span_186](start_span)[span_186](end_span)
+                <label class="option-label"><input type="radio" name="q37" value="খ">(খ) ৪৪তম</label>[span_187](start_span)[span_187](end_span)
+                <label class="option-label"><input type="radio" name="q37" value="গ">(গ) ৮৬তম</label>[span_188](start_span)[span_188](end_span)
+                <label class="option-label"><input type="radio" name="q37" value="ঘ">(ঘ) ৯২তম</label>[span_189](start_span)[span_189](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">38. রিজার্ভ ব্যাংক অফ ইন্ডিয়া (RBI) কত সালে প্রতিষ্ঠিত হয়?[span_190](start_span)[span_190](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q38" value="ক">(ক) ১৯৩৫</label>[span_191](start_span)[span_191](end_span)
+                <label class="option-label"><input type="radio" name="q38" value="খ">(খ) ১৯৪৭</label>[span_192](start_span)[span_192](end_span)
+                <label class="option-label"><input type="radio" name="q38" value="গ">(গ) ১৯৪৯</label>[span_193](start_span)[span_193](end_span)
+                <label class="option-label"><input type="radio" name="q38" value="ঘ">(ঘ) ১৯৫৫</label>[span_194](start_span)[span_194](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">39. ভারতে জিএসটি (GST) কত তারিখ থেকে চালু হয়?[span_195](start_span)[span_195](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q39" value="ক">(ক) ১ জানুয়ারি ২০১৬</label>[span_196](start_span)[span_196](end_span)
+                <label class="option-label"><input type="radio" name="q39" value="খ">(খ) ১ জুলাই ২০১৭</label>[span_197](start_span)[span_197](end_span)
+                <label class="option-label"><input type="radio" name="q39" value="গ">(গ) ৮ নভেম্বর ২০১৬</label>[span_198](start_span)[span_198](end_span)
+                <label class="option-label"><input type="radio" name="q39" value="ঘ">(ঘ) ১ এপ্রিল ২০১৮</label>[span_199](start_span)[span_199](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">40. ভারতে প্রথম পঞ্চবার্ষিকী পরিকল্পনা (First Five Year Plan) কোন বছর শুরু হয়?[span_200](start_span)[span_200](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q40" value="ক">(ক) ১৯৪৭</label>[span_201](start_span)[span_201](end_span)
+                <label class="option-label"><input type="radio" name="q40" value="খ">(খ) ১৯৫০</label>[span_202](start_span)[span_202](end_span)
+                <label class="option-label"><input type="radio" name="q40" value="গ">(গ) ১৯৫১</label>[span_203](start_span)[span_203](end_span)
+                <label class="option-label"><input type="radio" name="q40" value="ঘ">(ঘ) ১৯৫৬</label>[span_204](start_span)[span_204](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">41. 'ওডিসি' (Odissi) কোন রাজ্যের শাস্ত্রীয় নৃত্য?[span_205](start_span)[span_205](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q41" value="ক">(ক) অন্ধ্রপ্রদেশ</label>[span_206](start_span)[span_206](end_span)
+                <label class="option-label"><input type="radio" name="q41" value="খ">(খ) ওড়িশা</label>[span_207](start_span)[span_207](end_span)
+                <label class="option-label"><input type="radio" name="q41" value="গ">(গ) কেরালা</label>[span_208](start_span)[span_208](end_span)
+                <label class="option-label"><input type="radio" name="q41" value="ঘ">(ঘ) তামিলনাড়ু</label>[span_209](start_span)[span_209](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">42. நோবেল পুরস্কার জয়ী প্রথম ভারতীয় কে?[span_210](start_span)[span_210](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q42" value="ক">(ক) সি ভি রমন</label>[span_211](start_span)[span_211](end_span)
+                <label class="option-label"><input type="radio" name="q42" value="খ">(খ) রবীন্দ্রনাথ ঠাকুর</label>[span_212](start_span)[span_212](end_span)
+                <label class="option-label"><input type="radio" name="q42" value="গ">(গ) মাদার টেরেসা</label>[span_213](start_span)[span_213](end_span)
+                <label class="option-label"><input type="radio" name="q42" value="ঘ">(ঘ) অমর্ত্য সেন</label>[span_214](start_span)[span_214](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">43. ইউনেস্কো (UNESCO)-এর সদর দপ্তর কোথায় অবস্থিত?[span_215](start_span)[span_215](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q43" value="ক">(ক) নিউ ইয়র্ক</label>[span_216](start_span)[span_216](end_span)
+                <label class="option-label"><input type="radio" name="q43" value="খ">(খ) জেনেভা</label>[span_217](start_span)[span_217](end_span)
+                <label class="option-label"><input type="radio" name="q43" value="গ">(গ) প্যারিস</label>[span_218](start_span)[span_218](end_span)
+                <label class="option-label"><input type="radio" name="q43" value="ঘ">(ঘ) লন্ডন</label>[span_219](start_span)[span_219](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">44. 'মাই এক্সপেরিমেন্টস উইথ ট্রুথ' (My Experiments with Truth) বইটি কার লেখা?[span_220](start_span)[span_220](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q44" value="ক">(ক) জওহরলাল নেহেরু</label>[span_221](start_span)[span_221](end_span)
+                <label class="option-label"><input type="radio" name="q44" value="খ">(খ) মহাত্মা গান্ধী</label>[span_222](start_span)[span_222](end_span)
+                <label class="option-label"><input type="radio" name="q44" value="গ">(গ) বি আর আম্বেদকর</label>[span_223](start_span)[span_223](end_span)
+                <label class="option-label"><input type="radio" name="q44" value="ঘ">(ঘ) এ পি জে আব্দুল কালাম</label>[span_224](start_span)[span_224](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">45. 'আন্তর্জাতিক যোগ দিবস' কোন দিনটিতে পালিত হয়?[span_225](start_span)[span_225](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q45" value="ক">(ক) ৫ জুন</label>[span_226](start_span)[span_226](end_span)
+                <label class="option-label"><input type="radio" name="q45" value="খ">(খ) ২১ জুন</label>[span_227](start_span)[span_227](end_span)
+                <label class="option-label"><input type="radio" name="q45" value="গ">(গ) ২২ এপ্রিল</label>[span_228](start_span)[span_228](end_span)
+                <label class="option-label"><input type="radio" name="q45" value="ঘ">(ঘ) ১১ জুলাই</label>[span_229](start_span)[span_229](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">46. কথাকলি কোন রাজ্যের ঐতিহ্যবাহী নৃত্য?[span_230](start_span)[span_230](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q46" value="ক">(ক) কেরালা</label>[span_231](start_span)[span_231](end_span)
+                <label class="option-label"><input type="radio" name="q46" value="খ">(খ) তামিলনাড়ু</label>[span_232](start_span)[span_232](end_span)
+                <label class="option-label"><input type="radio" name="q46" value="গ">(গ) কর্ণাটক</label>[span_233](start_span)[span_233](end_span)
+                <label class="option-label"><input type="radio" name="q46" value="ঘ">(ঘ) অন্ধ্রপ্রদেশ</label>[span_234](start_span)[span_234](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">47. 'ডুরান্ড কাপ' (Durand Cup) কোন খেলার সাথে যুক্ত?[span_235](start_span)[span_235](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q47" value="ক">(ক) ক্রিকেট</label>[span_236](start_span)[span_236](end_span)
+                <label class="option-label"><input type="radio" name="q47" value="খ">(খ) ফুটবল</label>[span_237](start_span)[span_237](end_span)
+                <label class="option-label"><input type="radio" name="q47" value="গ">(গ) হকি</label>[span_238](start_span)[span_238](end_span)
+                <label class="option-label"><input type="radio" name="q47" value="ঘ">(ঘ) ব্যাডমিন্টন</label>[span_239](start_span)[span_239](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">48. ডন ব্র্যাডম্যান কোন দেশের বিখ্যাত ক্রিকেটার ছিলেন?[span_240](start_span)[span_240](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q48" value="ক">(ক) ইংল্যান্ড</label>[span_241](start_span)[span_241](end_span)
+                <label class="option-label"><input type="radio" name="q48" value="খ">(খ) অস্ট্রেলিয়া</label>[span_242](start_span)[span_242](end_span)
+                <label class="option-label"><input type="radio" name="q48" value="গ">(গ) দক্ষিণ আফ্রিকা</label>[span_243](start_span)[span_243](end_span)
+                <label class="option-label"><input type="radio" name="q48" value="ঘ">(ঘ) নিউজিল্যান্ড</label>[span_244](start_span)[span_244](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">49. আধুনিক অলিম্পিক গেমস কোন বছর প্রথম শুরু হয়েছিল?[span_245](start_span)[span_245](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q49" value="ক">(ক) ১৮৯৬</label>[span_246](start_span)[span_246](end_span)
+                <label class="option-label"><input type="radio" name="q49" value="খ">(খ) ১৯০০</label>[span_247](start_span)[span_247](end_span)
+                <label class="option-label"><input type="radio" name="q49" value="গ">(গ) ১৯০৪</label>[span_248](start_span)[span_248](end_span)
+                <label class="option-label"><input type="radio" name="q49" value="ঘ">(ঘ) ১৯০৮</label>[span_249](start_span)[span_249](end_span)
+            </div>
+        </div>
+
+        <div class="question-card">
+            <div class="question-text">50. থমাস কাপ (Thomas Cup) কোন খেলার সাথে সম্পর্কিত?[span_250](start_span)[span_250](end_span)</div>
+            <div class="options-container">
+                <label class="option-label"><input type="radio" name="q50" value="ক">(ক) টেবিল টেনিস</label>[span_251](start_span)[span_251](end_span)
+                <label class="option-label"><input type="radio" name="q50" value="খ">(খ) লন টেনিস</label>[span_252](start_span)[span_252](end_span)
+                <label class="option-label"><input type="radio" name="q50" value="গ">(গ) ব্যাডমিন্টন</label>[span_253](start_span)[span_253](end_span)
+                <label class="option-label"><input type="radio" name="q50" value="ঘ">(ঘ) গলফ</label>[span_254](start_span)[span_254](end_span)
+            </div>
+        </div>
+        
+        <button type="button" class="submit-btn" id="submit-btn" onclick="submitQuiz()">জমা দিন (Submit)</button>
+    </form>
+</div>
+
+<script>
+    const totalQuestions = 50;
+    let timeRemaining = 40 * 60; // 40 minutes in seconds
+    let timerInterval;
+    
+    // Correct Answers Map
+    const correctAnswers = {"1": "খ", "2": "গ", "3": "খ", "4": "ঘ", "5": "খ", "6": "খ", "7": "গ", "8": "ক", "9": "ক", "10": "গ", "11": "গ", "12": "খ", "13": "গ", "14": "খ", "15": "ক", "16": "গ", "17": "খ", "18": "গ", "19": "গ", "20": "খ", "21": "খ", "22": "ঘ", "23": "গ", "24": "খ", "25": "খ", "26": "গ", "27": "ঘ", "28": "খ", "29": "গ", "30": "খ", "31": "গ", "32": "খ", "33": "ক", "34": "গ", "35": "ক", "36": "ঘ", "37": "ক", "38": "ক", "39": "খ", "40": "গ", "41": "খ", "42": "খ", "43": "গ", "44": "খ", "45": "খ", "46": "ক", "47": "খ", "48": "খ", "49": "ক", "50": "গ"};
+
+    // Start Timer
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            timeRemaining--;
+            let mins = Math.floor(timeRemaining / 60);
+            let secs = timeRemaining % 60;
+            
+            let formattedMins = mins < 10 ? '0' + mins : mins;
+            let formattedSecs = secs < 10 ? '0' + secs : secs;
+            
+            document.getElementById('timer').innerText = `সময় বাকি: ${formattedMins}:${formattedSecs}`;
+            
+            if (timeRemaining <= 0) {
+                clearInterval(timerInterval);
+                alert("সময় শেষ! আপনার উত্তরপত্রটি স্বয়ংক্রিয়ভাবে জমা দেওয়া হচ্ছে।");
+                submitQuiz(true);
+            }
+        }, 1000);
+    }
+
+    function submitQuiz(isAuto = false) {
+        if(!isAuto) {
+            if(!confirm("আপনি কি নিশ্চিত যে আপনি পরীক্ষাটি শেষ করে জমা দিতে চান?")) {
+                return;
+            }
+        }
+        
+        clearInterval(timerInterval);
+        document.getElementById('timer').innerText = "পরীক্ষা সমাপ্ত";
+        document.getElementById('submit-btn').style.display = 'none';
+        document.getElementById('instruction-block').style.display = 'none';
+        
+        let correctCount = 0;
+        let wrongCount = 0;
+        let unansweredCount = 0;
+        
+        const form = document.getElementById('quiz-form');
+        
+        for(let i = 1; i <= totalQuestions; i++) {
+            const selectedOption = form.querySelector(`input[name="q${i}"]:checked`);
+            const correctAnswer = correctAnswers[i];
+            
+            const allOptionsOfQ = form.querySelectorAll(`input[name="q${i}"]`);
+            allOptionsOfQ.forEach(input => {
+                input.disabled = true;
+                input.parentElement.classList.add('disabled-options');
+            });
+
+            if (selectedOption) {
+                const userAns = selectedOption.value;
+                if (userAns === correctAnswer) {
+                    correctCount++;
+                    selectedOption.parentElement.classList.add('correct');
+                    selectedOption.parentElement.innerHTML += ' <span class="correct-answer-marker">✓ সঠিক</span>';
+                } else {
+                    wrongCount++;
+                    selectedOption.parentElement.classList.add('incorrect');
+                    selectedOption.parentElement.innerHTML += ' <span class="wrong-answer-marker">✗ ভুল</span>';
+                    
+                    const correctRadio = form.querySelector(`input[name="q${i}"][value="${correctAnswer}"]`);
+                    correctRadio.parentElement.classList.add('correct');
+                    correctRadio.parentElement.innerHTML += ' <span class="correct-answer-marker">✓ সঠিক উত্তর</span>';
+                }
+            } else {
+                unansweredCount++;
+                const correctRadio = form.querySelector(`input[name="q${i}"][value="${correctAnswer}"]`);
+                correctRadio.parentElement.classList.add('correct');
+                correctRadio.parentElement.innerHTML += ' <span class="correct-answer-marker">✓ সঠিক উত্তর (উত্তর দেওয়া হয়নি)</span>';
+            }
+        }
+        
+        let finalScore = (correctCount * 1) + (wrongCount * -0.25);
+        
+        document.getElementById('final-score').innerText = finalScore.toFixed(2);
+        document.getElementById('correct-count').innerText = correctCount;
+        document.getElementById('wrong-count').innerText = wrongCount;
+        document.getElementById('unanswered-count').innerText = unansweredCount;
+        
+        document.getElementById('result-panel').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    window.onload = startTimer;
+</script>
+
+</body>
+</html>
