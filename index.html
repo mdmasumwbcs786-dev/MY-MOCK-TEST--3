@@ -16,7 +16,7 @@
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'Kalpurush', 'SolaimanLipi';
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'SolaimanLipi', Arial;
             background-color: var(--bg-color);
             color: var(--text-color);
             margin: 0;
@@ -51,13 +51,13 @@
             margin-bottom: 10px;
         }
 
-        .timer-box, .score-box {
+        .timer-box {
             background: rgba(255, 255, 255, 0.2);
             padding: 8px 16px;
             border-radius: 6px;
             font-weight: bold;
             font-size: 18px;
-            margin: 5px;
+            margin: 5px auto;
         }
 
         .container {
@@ -90,7 +90,6 @@
             padding: 20px;
             margin-bottom: 20px;
             box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            transition: transform 0.2s;
         }
 
         .question-text {
@@ -220,9 +219,8 @@
 
 <header>
     <div class="header-container">
-        <h1>অনলাইন মক টেস্ট (Mock Test)</h1>
+        <h1>অনлайн মক টেস্ট (Mock Test)</h1>
         <div class="timer-box" id="timer">সময় বাকি: 40:00</div>
-        <div class="score-box" id="live-score-box" style="display:none;">স্কোর: 0</div>
     </div>
 </header>
 
@@ -234,7 +232,7 @@
             <li>মোট বরাদ্দ সময়: <strong>৪০ মিনিট</strong></li>
             <li>প্রতিটি সঠিক উত্তরের জন্য পাবেন: <strong>+১ নম্বর</strong></li>
             <li>প্রতিটি ভুল উত্তরের জন্য কাটা যাবে: <strong>-০.২৫ নম্বর</strong></li>
-            <li>নির্ধারিত সময় শেষ হলে পরীক্ষাটি স্বয়ংক্রিয়ভাবে (Auto-submit) জমা হয়ে যাবে।</li>
+            <li>নির্ধারিত সময় শেষ হলে পরীক্ষাটি স্বয়ংক্রিয়ভাবে জমা হয়ে যাবে।</li>
         </ul>
     </div>
 
@@ -263,6 +261,7 @@
 
     <form id="quiz-form">
         
+        <!-- Q1 -->
         <div class="question-card">
             <div class="question-text">1. সিন্ধু সভ্যতার কোন কেন্দ্রে বিখ্যাত 'গ্রেট বাথ' বা বৃহৎ স্নানাগারটি পাওয়া গেছে?</div>
             <div class="options-container">
@@ -273,6 +272,7 @@
             </div>
         </div>
 
+        <!-- Q2 -->
         <div class="question-card">
             <div class="question-text">2. কে 'বৌদ্ধধর্ম' প্রচারের জন্য সিংহলে (শ্রীলঙ্কা) মিশন পাঠিয়েছিলেন?</div>
             <div class="options-container">
@@ -283,18 +283,20 @@
             </div>
         </div>
 
+        <!-- Q3 -->
         <div class="question-card">
             <div class="question-text">3. 'কুতুব মিনার'-এর নির্মাণ কাজ কে শেষ করেছিলেন?</div>
             <div class="options-container">
                 <label class="option-label"><input type="radio" name="q3" value="ক">(ক) কুতুবউদ্দিন আইবক</label>
                 <label class="option-label"><input type="radio" name="q3" value="খ">(খ) ইলতুৎমিশ</label>
                 <label class="option-label"><input type="radio" name="q3" value="গ">(গ) রাজিয়া সুলতানা</label>
-                <label class="option-label"><input type="radio" name="q3" value="ঘ">(ঘ) আলাউদ্দিন খিলজি</label>
+                <label class="option-label"><input type="radio" name="q3" value="ঘ">(ঘ) আলাউদ্দিন খイルজি</label>
             </div>
         </div>
 
+        <!-- Q4 -->
         <div class="question-card">
-            <div class="question-text">4. আকবরের রাজত্বকালে রাজস্ব ব্যবস্থার দায়িত্বে কে ছিলেন?</div>
+            <div class="question-text">4. আকবরের রাজত্বকালে রাজস্ব ব্যবস্থার দায়িত্ব কে ছিলেন?</div>
             <div class="options-container">
                 <label class="option-label"><input type="radio" name="q4" value="ক">(ক) বীরবল</label>
                 <label class="option-label"><input type="radio" name="q4" value="খ">(খ) বৈরাম খাঁ</label>
@@ -303,6 +305,7 @@
             </div>
         </div>
 
+        <!-- Q5 -->
         <div class="question-card">
             <div class="question-text">5. ভারতে পর্তুগিজ শক্তির প্রথম কেন্দ্র কোনটি ছিল?</div>
             <div class="options-container">
@@ -313,18 +316,20 @@
             </div>
         </div>
 
+        <!-- Q6 -->
         <div class="question-card">
             <div class="question-text">6. স্বামী বিবেকানন্দ কত সালে শিকাগো ধর্ম মহাসভায় ভাষণ দিয়েছিলেন?</div>
             <div class="options-container">
                 <label class="option-label"><input type="radio" name="q6" value="ক">(ক) ১৮৯১</label>
                 <label class="option-label"><input type="radio" name="q6" value="খ">(খ) ১৮৯৩</label>
-                <label class="option-label"><input type="radio" name="q6" value="গ">(গ) ১৮ญ৫</label>
+                <label class="option-label"><input type="radio" name="q6" value="গ">(গ) ১৮৯৫</label>
                 <label class="option-label"><input type="radio" name="q6" value="ঘ">(ঘ) ১৮৯৭</label>
             </div>
         </div>
 
+        <!-- Q7 -->
         <div class="question-card">
-            <div class="question-text">7. 'মহাত্মা' গান্ধীকে প্রথম কে 'জাতির জনক' (Father of the Nation) বলে সম্বোধন করেন?</div>
+            <div class="question-text">7. 'মহাত্মা' গান্ধীকে প্রথম কে 'জাতির জনক' বলে সম্বোধন করেন?</div>
             <div class="options-container">
                 <label class="option-label"><input type="radio" name="q7" value="ক">(ক) রবীন্দ্রনাথ ঠাকুর</label>
                 <label class="option-label"><input type="radio" name="q7" value="খ">(খ) জওহরলাল নেহেরু</label>
@@ -333,6 +338,7 @@
             </div>
         </div>
 
+        <!-- Q8 -->
         <div class="question-card">
             <div class="question-text">8. জালিয়ানওয়ালাবাগ হত্যাকাণ্ড কোন বছর ঘটেছিল?</div>
             <div class="options-container">
@@ -343,6 +349,7 @@
             </div>
         </div>
 
+        <!-- Q9 -->
         <div class="question-card">
             <div class="question-text">9. আজাদ হিন্দ ফৌজ (INA) কোথায় প্রথম গঠিত হয়েছিল?</div>
             <div class="options-container">
@@ -353,8 +360,9 @@
             </div>
         </div>
 
+        <!-- Q10 -->
         <div class="question-card">
-            <div class="question-text">10. কত সালের আম্বেদকর ও গান্ধীর মধ্যে 'পুনা চুক্তি' স্বাক্ষরিত হয়?</div>
+            <div class="question-text">10. কত সালে আম্বেদকর ও গান্ধীর মধ্যে 'পুনা চুক্তি' স্বাক্ষরিত হয়?</div>
             <div class="options-container">
                 <label class="option-label"><input type="radio" name="q10" value="ক">(ক) ১৯৩০</label>
                 <label class="option-label"><input type="radio" name="q10" value="খ">(খ) ১৯৩১</label>
@@ -363,16 +371,18 @@
             </div>
         </div>
 
+        <!-- Q11 -->
         <div class="question-card">
-            <div class="question-text">11. ভারতের কোন রাজ্যের উপকূলরেখা (Coastline) দীর্ঘতম?</div>
+            <div class="question-text">11. ভারতের কোন রাজ্যের উপকূলরেখা দীর্ঘতম?</div>
             <div class="options-container">
                 <label class="option-label"><input type="radio" name="q11" value="ক">(ক) তামিলনাড়ু</label>
-                <label class="option-label"><input type="radio" name="q11" value="খ">(خ) মহারাষ্ট্র</label>
+                <label class="option-label"><input type="radio" name="q11" value="খ">(খ) মহারাষ্ট্র</label>
                 <label class="option-label"><input type="radio" name="q11" value="গ">(গ) গুজরাট</label>
                 <label class="option-label"><input type="radio" name="q11" value="ঘ">(ঘ) অন্ধ্রপ্রদেশ</label>
             </div>
         </div>
 
+        <!-- Q12 -->
         <div class="question-card">
             <div class="question-text">12. ক্ষেত্রফলের দিক থেকে ভারতের ক্ষুদ্রতম রাজ্য কোনটি?</div>
             <div class="options-container">
@@ -383,8 +393,9 @@
             </div>
         </div>
 
+        <!-- Q13 -->
         <div class="question-card">
-            <div class="question-text">13. আন্দামান ও নিকোবর দ্বীপপুঞ্জ পৃথক করেছে কোন চ্যানেল?</div>
+            <div class="question-text">13. আন্দামান ও নিকোবর দ্বীপপুঞ্জকে পৃথক করেছে কোন চ্যানেল?</div>
             <div class="options-container">
                 <label class="option-label"><input type="radio" name="q13" value="ক">(ক) ৮ ডিগ্রি চ্যানেল</label>
                 <label class="option-label"><input type="radio" name="q13" value="খ">(খ) ৯ ডিগ্রি চ্যানেল</label>
@@ -393,6 +404,7 @@
             </div>
         </div>
 
+        <!-- Q14 -->
         <div class="question-card">
             <div class="question-text">14. 'লুনী' নদী ভারতের কোন রাজ্যে প্রবাহিত হয়েছে?</div>
             <div class="options-container">
@@ -403,6 +415,7 @@
             </div>
         </div>
 
+        <!-- Q15 -->
         <div class="question-card">
             <div class="question-text">15. ভারতের সর্বোচ্চ জলপ্রপাত 'কুঞ্চিকল' কোন রাজ্যে অবস্থিত?</div>
             <div class="options-container">
@@ -413,6 +426,7 @@
             </div>
         </div>
 
+        <!-- Q16 -->
         <div class="question-card">
             <div class="question-text">16. ভারতের প্রাচীনতম তৈল শোধনাগারটি কোথায় অবস্থিত?</div>
             <div class="options-container">
@@ -423,6 +437,7 @@
             </div>
         </div>
 
+        <!-- Q17 -->
         <div class="question-card">
             <div class="question-text">17. 'কাজিরাঙ্গা জাতীয় উদ্যান' কিসের জন্য বিখ্যাত?</div>
             <div class="options-container">
@@ -433,6 +448,7 @@
             </div>
         </div>
 
+        <!-- Q18 -->
         <div class="question-card">
             <div class="question-text">18. দক্ষিণ ভারতের দীর্ঘতম নদী কোনটি?</div>
             <div class="options-container">
@@ -443,6 +459,7 @@
             </div>
         </div>
 
+        <!-- Q19 -->
         <div class="question-card">
             <div class="question-text">19. সূর্য থেকে পৃথিবীতে আলো আসতে আনুমানিক কত সময় লাগে?</div>
             <div class="options-container">
@@ -453,6 +470,7 @@
             </div>
         </div>
 
+        <!-- Q20 -->
         <div class="question-card">
             <div class="question-text">20. ভারতের প্রথম পারমাণবিক বিদ্যুৎ কেন্দ্র কোনটি?</div>
             <div class="options-container">
@@ -463,6 +481,7 @@
             </div>
         </div>
 
+        <!-- Q21 -->
         <div class="question-card">
             <div class="question-text">21. মানবদেহের বৃহত্তম অঙ্গ (Organ) কোনটি?</div>
             <div class="options-container">
@@ -473,6 +492,7 @@
             </div>
         </div>
 
+        <!-- Q22 -->
         <div class="question-card">
             <div class="question-text">22. রক্ত জমাট বাঁধতে কোন ভিটামিন সাহায্য করে?</div>
             <div class="options-container">
@@ -483,6 +503,7 @@
             </div>
         </div>
 
+        <!-- Q23 -->
         <div class="question-card">
             <div class="question-text">23. ইনসুলিন হরমোন মানবদেহের কোন অংশ থেকে ক্ষরিত হয়?</div>
             <div class="options-container">
@@ -493,6 +514,7 @@
             </div>
         </div>
 
+        <!-- Q24 -->
         <div class="question-card">
             <div class="question-text">24. 'কোষের মস্তিষ্ক' কাকে বলা হয়?</div>
             <div class="options-container">
@@ -503,16 +525,18 @@
             </div>
         </div>
 
+        <!-- Q25 -->
         <div class="question-card">
             <div class="question-text">25. পেনিসিলিন কে আবিষ্কার করেন?</div>
             <div class="options-container">
-                <label class="option-label"><input type="radio" name="q25" value="ক">(ক) লui পাস্তুর</label>
+                <label class="option-label"><input type="radio" name="q25" value="ক">(ক) লুই পাস্তুর</label>
                 <label class="option-label"><input type="radio" name="q25" value="খ">(খ) আলেকজান্ডার ফ্লেমিং</label>
                 <label class="option-label"><input type="radio" name="q25" value="গ">(গ) এডওয়ার্ড জেনার</label>
                 <label class="option-label"><input type="radio" name="q25" value="ঘ">(ঘ) রবার্ট কোচ</label>
             </div>
         </div>
 
+        <!-- Q26 -->
         <div class="question-card">
             <div class="question-text">26. মানবদেহে ক্রোমোজোমের সংখ্যা কত?</div>
             <div class="options-container">
@@ -523,6 +547,7 @@
             </div>
         </div>
 
+        <!-- Q27 -->
         <div class="question-card">
             <div class="question-text">27. নিচের কোনটি নোবেল গ্যাস (Noble Gas) নয়?</div>
             <div class="options-container">
@@ -533,6 +558,7 @@
             </div>
         </div>
 
+        <!-- Q28 -->
         <div class="question-card">
             <div class="question-text">28. রান্নার গ্যাসে (LPG) প্রধানত কোন উপাদান থাকে?</div>
             <div class="options-container">
@@ -543,6 +569,7 @@
             </div>
         </div>
 
+        <!-- Q29 -->
         <div class="question-card">
             <div class="question-text">29. গাড়ির পিছনের দৃশ্য দেখার জন্য কোন ধরণের দর্পণ ব্যবহার করা হয়?</div>
             <div class="options-container">
@@ -553,6 +580,7 @@
             </div>
         </div>
 
+        <!-- Q30 -->
         <div class="question-card">
             <div class="question-text">30. 'শব্দের তীব্রতা' পরিমাপের একক কী?</div>
             <div class="options-container">
@@ -563,6 +591,7 @@
             </div>
         </div>
 
+        <!-- Q31 -->
         <div class="question-card">
             <div class="question-text">31. ভারতীয় সংবিধানের জনক কাকে বলা হয়?</div>
             <div class="options-container">
@@ -573,16 +602,18 @@
             </div>
         </div>
 
+        <!-- Q32 -->
         <div class="question-card">
             <div class="question-text">32. ভারতীয় সংবিধানে 'মৌলিক অধিকার' কোন দেশের সংবিধান থেকে নেওয়া হয়েছে?</div>
             <div class="options-container">
                 <label class="option-label"><input type="radio" name="q32" value="ক">(ক) ব্রিটেন</label>
                 <label class="option-label"><input type="radio" name="q32" value="খ">(খ) আমেরিকা (USA)</label>
-                <label class="option-label"><input type="radio" name="q32" value="গ">(গ)加拿大</label>
+                <label class="option-label"><input type="radio" name="q32" value="গ">(গ) কানাডা</label>
                 <label class="option-label"><input type="radio" name="q32" value="ঘ">(ঘ) আয়ারল্যান্ড</label>
             </div>
         </div>
 
+        <!-- Q33 -->
         <div class="question-card">
             <div class="question-text">33. ভারতের লোকসভার প্রথম স্পিকার কে ছিলেন?</div>
             <div class="options-container">
@@ -593,6 +624,7 @@
             </div>
         </div>
 
+        <!-- Q34 -->
         <div class="question-card">
             <div class="question-text">34. সুপ্রিম কোর্টের বিচারপতিদের অবসরের বয়স কত বছর?</div>
             <div class="options-container">
@@ -603,6 +635,7 @@
             </div>
         </div>
 
+        <!-- Q35 -->
         <div class="question-card">
             <div class="question-text">35. পঞ্চায়েতি রাজ ব্যবস্থা প্রথম কোন রাজ্যে চালু হয়?</div>
             <div class="options-container">
@@ -613,6 +646,7 @@
             </div>
         </div>
 
+        <!-- Q36 -->
         <div class="question-card">
             <div class="question-text">36. ভারতের রাষ্ট্রপতিকে কে শপথ বাক্য পাঠ করান?</div>
             <div class="options-container">
@@ -623,8 +657,9 @@
             </div>
         </div>
 
+        <!-- Q37 -->
         <div class="question-card">
-            <div class="question-text">37. কততম সংশোধনী দ্বারা ভারতীয় সংবিধানে 'মৌলিক কর্তব্য' যুক্ত করা হয়?</div>
+            <div class="question-text">37. কততম সংশোধনী দ্বারা ভারতীয় সংবিধানে 'মৌলিক कर्तव्य' যুক্ত করা হয়?</div>
             <div class="options-container">
                 <label class="option-label"><input type="radio" name="q37" value="ক">(ক) ৪২তম</label>
                 <label class="option-label"><input type="radio" name="q37" value="খ">(খ) ৪৪তম</label>
@@ -633,6 +668,7 @@
             </div>
         </div>
 
+        <!-- Q38 -->
         <div class="question-card">
             <div class="question-text">38. রিজার্ভ ব্যাংক অফ ইন্ডিয়া (RBI) কত সালে প্রতিষ্ঠিত হয়?</div>
             <div class="options-container">
@@ -643,6 +679,7 @@
             </div>
         </div>
 
+        <!-- Q39 -->
         <div class="question-card">
             <div class="question-text">39. ভারতে জিএসটি (GST) কত তারিখ থেকে চালু হয়?</div>
             <div class="options-container">
@@ -653,26 +690,29 @@
             </div>
         </div>
 
+        <!-- Q40 -->
         <div class="question-card">
-            <div class="question-text">40. ভারতে প্রথম পঞ্চবার্ষিকী পরিকল্পনা (First Five Year Plan) কোন বছর শুরু হয়?</div>
+            <div class="question-text">40. ভারতে প্রথম পঞ্চবার্ষিকী পরিকল্পনা কোন বছর শুরু হয়?</div>
             <div class="options-container">
                 <label class="option-label"><input type="radio" name="q40" value="ক">(ক) ১৯৪৭</label>
-                <label class="option-label"><input type="radio" name="q40" value="খ">(খ) ১৯৫০</label>
+                <label class="option-label"><input type="radio" name="q40" value="ख">(খ) ১৯五十</label>
                 <label class="option-label"><input type="radio" name="q40" value="গ">(গ) ১৯৫১</label>
                 <label class="option-label"><input type="radio" name="q40" value="ঘ">(ঘ) ১৯৫৬</label>
             </div>
         </div>
 
+        <!-- Q41 -->
         <div class="question-card">
             <div class="question-text">41. 'ওডিসি' (Odissi) কোন রাজ্যের শাস্ত্রীয় নৃত্য?</div>
             <div class="options-container">
-                <label class="option-label"><input type="radio" name="q41" value="ক">(ক) অন্ধ্রপ্রদেশ</label>
+                <label class="option-label"><input type="radio" name="q41" value="ক">(ক) অন্ধ್ರপ্রদেশ</label>
                 <label class="option-label"><input type="radio" name="q41" value="খ">(খ) ওড়িশা</label>
                 <label class="option-label"><input type="radio" name="q41" value="গ">(গ) কেরালা</label>
                 <label class="option-label"><input type="radio" name="q41" value="ঘ">(ঘ) তামিলনাড়ু</label>
             </div>
         </div>
 
+        <!-- Q42 -->
         <div class="question-card">
             <div class="question-text">42. নোবেল পুরস্কার জয়ী প্রথম ভারতীয় কে?</div>
             <div class="options-container">
@@ -683,6 +723,7 @@
             </div>
         </div>
 
+        <!-- Q43 -->
         <div class="question-card">
             <div class="question-text">43. ইউনেস্কো (UNESCO)-এর সদর দপ্তর কোথায় অবস্থিত?</div>
             <div class="options-container">
@@ -693,8 +734,9 @@
             </div>
         </div>
 
+        <!-- Q44 -->
         <div class="question-card">
-            <div class="question-text">44. 'মাই এক্সপেরিমেন্টস উইথ ট্রুথ' (My Experiments with Truth) বইটি কার লেখা?</div>
+            <div class="question-text">44. 'মাই এক্সপেরিমেন্টস উইথ ট্রুথ' বইটি কার লেখা?</div>
             <div class="options-container">
                 <label class="option-label"><input type="radio" name="q44" value="ক">(ক) জওহরলাল নেহেরু</label>
                 <label class="option-label"><input type="radio" name="q44" value="খ">(খ) মহাত্মা গান্ধী</label>
@@ -703,6 +745,7 @@
             </div>
         </div>
 
+        <!-- Q45 -->
         <div class="question-card">
             <div class="question-text">45. 'আন্তর্জাতিক যোগ দিবস' কোন দিনটিতে পালিত হয়?</div>
             <div class="options-container">
@@ -713,6 +756,7 @@
             </div>
         </div>
 
+        <!-- Q46 -->
         <div class="question-card">
             <div class="question-text">46. কথাকলি কোন রাজ্যের ঐতিহ্যবাহী নৃত্য?</div>
             <div class="options-container">
@@ -723,8 +767,9 @@
             </div>
         </div>
 
+        <!-- Q47 -->
         <div class="question-card">
-            <div class="question-text">47. 'ডুরান্ড কাপ' (Durand Cup) কোন খেলার সাথে যুক্ত?</div>
+            <div class="question-text">47. 'ডুরান্ড কাপ' কোন খেলার সাথে যুক্ত?</div>
             <div class="options-container">
                 <label class="option-label"><input type="radio" name="q47" value="ক">(ক) ক্রিকেট</label>
                 <label class="option-label"><input type="radio" name="q47" value="খ">(খ) ফুটবল</label>
@@ -733,6 +778,7 @@
             </div>
         </div>
 
+        <!-- Q48 -->
         <div class="question-card">
             <div class="question-text">48. ডন ব্র্যাডম্যান কোন দেশের বিখ্যাত ক্রিকেটার ছিলেন?</div>
             <div class="options-container">
@@ -743,6 +789,7 @@
             </div>
         </div>
 
+        <!-- Q49 -->
         <div class="question-card">
             <div class="question-text">49. আধুনিক অলিম্পিক গেমস কোন বছর প্রথম শুরু হয়েছিল?</div>
             <div class="options-container">
@@ -753,8 +800,9 @@
             </div>
         </div>
 
+        <!-- Q50 -->
         <div class="question-card">
-            <div class="question-text">50. থমাস কাপ (Thomas Cup) কোন খেলার সাথে সম্পর্কিত?</div>
+            <div class="question-text">50. থমাস কাপ কোন খেলার সাথে সম্পর্কিত?</div>
             <div class="options-container">
                 <label class="option-label"><input type="radio" name="q50" value="ক">(ক) টেবিল টেনিস</label>
                 <label class="option-label"><input type="radio" name="q50" value="খ">(খ) লন টেনিস</label>
@@ -763,7 +811,7 @@
             </div>
         </div>
         
-        <button type="button" class="submit-btn" id="submit-btn" onclick="submitQuiz()"> Submit</button>
+        <button type="button" class="submit-btn" id="submit-btn" onclick="submitQuiz()">জমা দিন (Submit)</button>
     </form>
 </div>
 
@@ -772,7 +820,18 @@
     let timeRemaining = 40 * 60; 
     let timerInterval;
     
-    const correctAnswers = {"1": "খ", "2": "গ", "3": "খ", "4": "ঘ", "5": "খ", "6": "খ", "7": "গ", "8": "ক", "9": "ক", "10": "গ", "11": "গ", "12": "খ", "13": "গ", "14": "খ", "15": "ক", "16": "গ", "17": "খ", "18": "গ", "19": "গ", "20": "খ", "21": "খ", "22": "ঘ", "23": "গ", "24": "খ", "25": "খ", "26": "গ", "27": "ঘ", "28": "খ", "29": "গ", "30": "খ", "31": "গ", "32": "খ", "33": "ক", "34": "গ", "35": "ক", "36": "ঘ", "37": "ক", "38": "ক", "39": "খ", "40": "g", "41": "খ", "42": "খ", "43": "গ", "44": "খ", "45": "খ", "46": "ক", "47": "খ", "48": "খ", "49": "ক", "50": "গ"};
+    const correctAnswers = {
+        "1": "খ", "2": "গ", "3": "খ", "4": "ঘ", "5": "খ", 
+        "6": "খ", "7": "গ", "8": "ক", "9": "ক", "10": "গ", 
+        "11": "গ", "12": "খ", "13": "গ", "14": "খ", "15": "ক", 
+        "16": "গ", "17": "খ", "18": "গ", "19": "গ", "20": "খ", 
+        "21": "খ", "22": "ঘ", "23": "গ", "24": "খ", "25": "খ", 
+        "26": "গ", "27": "ঘ", "28": "খ", "29": "গ", "30": "খ", 
+        "31": "গ", "32": "খ", "33": "ক", "34": "গ", "35": "ক", 
+        "36": "ঘ", "37": "ক", "38": "ক", "39": "খ", "40": "গ", 
+        "41": "খ", "42": "খ", "43": "গ", "44": "খ", "45": "খ", 
+        "46": "ক", "47": "খ", "48": "খ", "49": "ক", "50": "গ"
+    };
 
     function startTimer() {
         timerInterval = setInterval(() => {
@@ -833,14 +892,18 @@
                     selectedOption.parentElement.innerHTML += ' <span class="wrong-answer-marker">✗ ভুল</span>';
                     
                     const correctRadio = form.querySelector(`input[name="q${i}"][value="${correctAnswer}"]`);
-                    correctRadio.parentElement.classList.add('correct');
-                    correctRadio.parentElement.innerHTML += ' <span class="correct-answer-marker">✓ সঠিক উত্তর</span>';
+                    if(correctRadio) {
+                        correctRadio.parentElement.classList.add('correct');
+                        correctRadio.parentElement.innerHTML += ' <span class="correct-answer-marker">✓ সঠিক উত্তর</span>';
+                    }
                 }
             } else {
                 unansweredCount++;
                 const correctRadio = form.querySelector(`input[name="q${i}"][value="${correctAnswer}"]`);
-                correctRadio.parentElement.classList.add('correct');
-                correctRadio.parentElement.innerHTML += ' <span class="correct-answer-marker">✓ সঠিক উত্তর (উত্তর দেওয়া হয়নি)</span>';
+                if(correctRadio) {
+                    correctRadio.parentElement.classList.add('correct');
+                    correctRadio.parentElement.innerHTML += ' <span class="correct-answer-marker">✓ সঠিক উত্তর (উত্তর দেওয়া হয়নি)</span>';
+                }
             }
         }
         
